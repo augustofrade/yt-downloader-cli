@@ -3,9 +3,13 @@ const fs = require("fs");
 const path = require("path");
 const chalk = require("chalk");
 const ProgressBar = require("progress");
+var sanitize = require("sanitize-filename");
+
+const { formatBytes } = require("./utils");
 
 class YtDownloader {
     static async _getVideoInfo(url) {
+        if(!ytdl.validateURL(url)) return { error: "Invalid URL passed"};
         const info = await ytdl.getInfo(url);
         const respDetails = info.videoDetails;
         const format = ytdl.chooseFormat(info.formats, { filter: "audioonly" });
@@ -17,18 +21,13 @@ class YtDownloader {
         };
     }
 
-    // static async downloadVideo(url, dir) {
-    //         const videoInfo = await this._getVideoInfo(url);
-    //         console.log(`Downloading ${chalk.green(videoInfo.title)} by ${chalk.green(videoInfo.channelName)}`);
-    //         const fullDir = path.join(dir, `${videoInfo.title}.mp3`);
-    //         ytdl(url, {filter: "audioonly" }).pipe(fs.createWriteStream( fullDir ));
-    //         console.log("Download finished.\n");
-    // }
-
     static async downloadVideo(url, dir) {
         const videoInfo = await this._getVideoInfo(url);        
-        console.log(`Downloading ${chalk.green(videoInfo.title)} by ${chalk.green(videoInfo.channelName)}`);
-        
+        if(videoInfo.error) {
+            return console.log(chalk.bgRed(videoInfo.error));
+        }
+        console.log(`Downloading ${chalk.green(videoInfo.title)} by ${chalk.green(videoInfo.channelName)})`);
+
         const bufferBytes = [];
         const req = ytdl(url, {filter: "audioonly" });
         var bar = new ProgressBar('   Progress: [:bar] :rate/mbps :percent :etas', {
@@ -44,13 +43,13 @@ class YtDownloader {
         });
         req.on("end", () => {
             const buffer = Buffer.concat(bufferBytes);
-            const fullDir = path.join(dir, `${videoInfo.title}.mp3`);
+            const fullDir = path.join(dir, `${sanitize(videoInfo.title)}.mp3`);
             fs.writeFileSync(fullDir, buffer, "binary");
-            console.log("Download finished.\n");
+            console.log(`Finished downloading ${formatBytes(videoInfo.bytes)}.\n`);
         });
     }
 
-    static async downloadBulk(urls, dir) {
+    static async downloadQueue(urls, dir) {
         function sleep(ms) {
             return new Promise((resolve) => {
                 setTimeout(resolve, ms);

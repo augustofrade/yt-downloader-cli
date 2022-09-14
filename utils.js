@@ -1,4 +1,4 @@
-module.exports = function formatBytes(bytes, decimals = 2) {
+function formatBytes(bytes, decimals = 2) {
     if (!+bytes) return '0 Bytes'
 
     const k = 1024
@@ -9,3 +9,5 @@ module.exports = function formatBytes(bytes, decimals = 2) {
 
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
 }
+
+module.exports = { formatBytes }

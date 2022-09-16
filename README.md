@@ -18,8 +18,11 @@ Downloads Youtube videos as .mp3 files.
 - **Settings**:  settings the downloader uses.
 `node index.js settings [option]=[value]`
 	- Multiple options followed by values can be passed
+	- Show Settings:
+	`node index.js settings show`
 	- Available options:
 		- "--dir": Sets where the files will be saved
+		- "--log": Sets wether the downloader should generate logs after downloading audio.
 
 To view help:
 `node index.js --help`

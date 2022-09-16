@@ -1,10 +1,8 @@
 #!/usr/bin/env node
 
-const chalk = require("chalk");
 const yargs = require("yargs/yargs")
 const { hideBin } = require("yargs/helpers")
 const fs = require("fs");
-const path = require("path");
 
 const YtDownloader = require("./YTDownloader");
 const { SettingsManager } = require("./SettingsManager");
@@ -40,16 +38,21 @@ const argv = yargs(hideBin(process.argv))
       } else if(argv.dir && !fs.existsSync(argv.dir)) {
         SettingsManager._showError(`"${argv.dir}" is not a valid directory`)
       }
-      if(argv.queue)
-        YtDownloader.downloadQueue(argv.bulk, saveDir);
-      else
-        YtDownloader.downloadVideo(argv.url, saveDir)
+
+      YtDownloader.shouldGenerateLogs = SettingsManager.shouldGenerateLogs;
+      if(YtDownloader.shouldGenerateLogs)
+        console.log("Generating logs for downloaded files\n");
+
+      if(argv.queue) {
+        YtDownloader.downloadQueue(argv.queue, saveDir);
+      } else
+        YtDownloader.downloadAudio(argv.url, saveDir)
     }
   )
 
   .command("settings", "Define settings values passed from the options", (yargs) => {
     let argv = yargs
-      .usage("$0 settings [option] [value]")
+      .usage("$0 settings [option]=[value]")
       .options({
         dir: {
           alias: "d",
@@ -57,8 +60,23 @@ const argv = yargs(hideBin(process.argv))
           description: "Sets the default directory the downloaded files will be saved on"
         }
       })
+      .options({
+        log: {
+          alias: "l",
+          type: "boolean",
+          description: "Sets whether to log the downloaded files to the log file or not"
+        }
+      })
+
+      .command("show", "Exibes all settings and its values", (yargs) => {
+        let argv = yargs
+        .usage("$0 settings show")
+      }, function (yargs) {
+        SettingsManager.printSettings();
+      });
+
     }, function (argv) {
-      const saved = SettingsManager.setSettings([ ["dir", argv.dir] ]);
+      const saved = SettingsManager.setSettings([ ["dir", argv.dir], ["generateLogs", argv.log] ]);
       if(saved)
         SettingsManager._showSuccess("Settings saved");
       else

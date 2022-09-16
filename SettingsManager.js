@@ -1,21 +1,34 @@
 const path = require("path");
 const fs = require("fs");
 const chalk = require("chalk");
+const { formatBytes } = require("./utils");
 
 
 class SettingsManager {
-    static configDir = path.join(__dirname, "./configs.json");
+    static configFileDir = path.join(__dirname, "./configs.json");
+    static logFileDir = path.join(__dirname, "./logs.txt");
     static defaultSettings = {
-        dir: path.join(__dirname, "./downloads")
+        dir: path.join(__dirname, "./downloads"),
+        generateLogs: true,
     };
 
     static get Settings() {
         this._verifySettingsFile();
-        return JSON.parse(fs.readFileSync(this.configDir));
+        return JSON.parse(fs.readFileSync(this.configFileDir));
     }
     
     static get downloadDirectory() {
         return this.Settings.dir;
+    }
+
+    static get shouldGenerateLogs() {
+        return this.Settings.generateLogs;
+    }
+
+    static generateLog(videoInfo) {
+        const { title, channelName, bytes } = videoInfo;
+        const msg = `"${new Date().toString()}\n${title}" by ${channelName}\nDownloaded ${formatBytes(bytes)}\n\n`;
+        fs.appendFileSync(this.logFileDir, msg);
     }
 
     static setSettings(props) {
@@ -27,14 +40,18 @@ class SettingsManager {
                 saved = true;
             }
         });
-        fs.writeFileSync(this.configDir, JSON.stringify( settings ));
+        fs.writeFileSync(this.configFileDir, JSON.stringify( settings ));
        return saved;
     }
 
+    static printSettings() {
+        console.table(this.Settings);
+    }
+
     static _verifySettingsFile() {
-        if(!fs.existsSync(this.configDir) || fs.readFileSync(this.configDir).length === 0) {
+        if(!fs.existsSync(this.configFileDir) || fs.readFileSync(this.configFileDir).length === 0) {
             this._showWarning("Warning: no directory settings found. Creating new configuration file...\n");
-            fs.writeFileSync(this.configDir, JSON.stringify( this.defaultSettings ));
+            fs.writeFileSync(this.configFileDir, JSON.stringify( this.defaultSettings ));
         }
     }
 

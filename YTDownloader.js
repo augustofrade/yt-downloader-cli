@@ -37,20 +37,20 @@ class YtDownloader {
         const { dir, url, format } = downloadOptions;
 
         return new Promise(resolve => {
-            console.log(`Downloading ${chalk.green(videoInfo.title)} by ${chalk.green(videoInfo.channelName)})`);
+            console.log(`Downloading ${chalk.green(videoInfo.title)} by ${chalk.green(videoInfo.channelName)}`);
             
             const bufferBytes = [];
             const req = ytdl(url, {filter: "audioonly" });
-            var bar = new ProgressBar('   Progress: [:bar] :rate/mbps :percent :etas', {
-                complete: '=',
-                incomplete: ' ',
+            var bar = new ProgressBar("  Progress: [:bar] :rate/mbps :percent :etas", {
+                complete: "=",
+                incomplete: " ",
                 width: 20,
                 total: parseInt(videoInfo.bytes)
             });
             
             req.on("data", (data) => {
                 bufferBytes.push(data);
-                bar.tick(data.length)
+                bar.tick(data.length);
             });
             req.on("end", () => {
                 const buffer = Buffer.concat(bufferBytes);
@@ -63,14 +63,14 @@ class YtDownloader {
                 
                 resolve();
             });
-        })
+        });
     }
 
     static async downloadQueue(urls, dir) {
 
         for(let i = 0; i < urls.length; i++) {
             await this.downloadAudio(urls[i], dir);
-        };
+        }
     }
 }
 

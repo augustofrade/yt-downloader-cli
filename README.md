@@ -3,7 +3,7 @@ Downloads Youtube videos as .mp3 files.
 
 ## Features
 - Download videos as MP3
-- Download a queue of videos with the *bulk* option
+- Download a queue of videos with the *queue* option
 - Progress Bar
 
 ## Usage

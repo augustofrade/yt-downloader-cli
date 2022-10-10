@@ -27,7 +27,7 @@ class SettingsManager {
 
     static generateLog(videoInfo) {
         const { title, channelName, bytes } = videoInfo;
-        const msg = `"${new Date().toString()}\n${title}" by ${channelName}\nDownloaded ${formatBytes(bytes)}\n\n`;
+        const msg = `${new Date().toString()}\n${title}" by ${channelName}\nDownloaded ${formatBytes(bytes)}\n\n`;
         fs.appendFileSync(this.logFileDir, msg);
     }
 

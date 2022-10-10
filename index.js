@@ -1,7 +1,8 @@
 #!/usr/bin/env node
+/* eslint-disable no-unused-vars */
 
-const yargs = require("yargs/yargs")
-const { hideBin } = require("yargs/helpers")
+const yargs = require("yargs/yargs");
+const { hideBin } = require("yargs/helpers");
 const fs = require("fs");
 
 const YtDownloader = require("./YTDownloader");
@@ -29,24 +30,26 @@ const argv = yargs(hideBin(process.argv))
           type: "array",
           description: "Downloads a list of videos separated by spaces"
         }
-      })
+      });
 
     }, function (argv) {
+      // Main function
       let saveDir = SettingsManager.downloadDirectory;
       if(argv.dir && fs.existsSync(argv.dir)) {
         saveDir = argv.dir;
       } else if(argv.dir && !fs.existsSync(argv.dir)) {
-        SettingsManager._showError(`"${argv.dir}" is not a valid directory`)
+        SettingsManager._showError(`"${argv.dir}" is not a valid directory`);
       }
 
       YtDownloader.shouldGenerateLogs = SettingsManager.shouldGenerateLogs;
       if(YtDownloader.shouldGenerateLogs)
-        console.log("Generating logs for downloaded files\n");
+        console.log("*Generating logs for downloaded files\n");
 
+      // Download 
       if(argv.queue) {
         YtDownloader.downloadQueue(argv.queue, saveDir);
       } else
-        YtDownloader.downloadAudio(argv.url, saveDir)
+        YtDownloader.downloadAudio(argv.url, saveDir);
     }
   )
 
@@ -70,7 +73,7 @@ const argv = yargs(hideBin(process.argv))
 
       .command("show", "Exibes all settings and its values", (yargs) => {
         let argv = yargs
-        .usage("$0 settings show")
+        .usage("$0 settings show");
       }, function (yargs) {
         SettingsManager.printSettings();
       });
@@ -86,4 +89,4 @@ const argv = yargs(hideBin(process.argv))
 
   .version(false)
   .help()
-  .argv
+  .argv;

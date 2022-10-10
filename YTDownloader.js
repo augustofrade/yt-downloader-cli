@@ -36,33 +36,39 @@ class YtDownloader {
     static _execDownload(videoInfo, downloadOptions) {
         const { dir, url, format } = downloadOptions;
 
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             console.log(`Downloading ${chalk.green(videoInfo.title)} by ${chalk.green(videoInfo.channelName)}`);
-            
-            const bufferBytes = [];
-            const req = ytdl(url, {filter: "audioonly" });
-            var bar = new ProgressBar("  Progress: [:bar] :rate/mbps :percent :etas", {
-                complete: "=",
-                incomplete: " ",
-                width: 20,
-                total: parseInt(videoInfo.bytes)
-            });
-            
-            req.on("data", (data) => {
-                bufferBytes.push(data);
-                bar.tick(data.length);
-            });
-            req.on("end", () => {
-                const buffer = Buffer.concat(bufferBytes);
-                const fullDir = path.join(dir, `${sanitize(videoInfo.title)}.${format}`);
-                fs.writeFileSync(fullDir, buffer, "binary");
-                console.log(`Finished downloading ${formatBytes(videoInfo.bytes)}.\n`);
+            try {
+
+                const bufferBytes = [];
+                const req = ytdl(url, {filter: "audioonly" });
+                var bar = new ProgressBar("  Progress: [:bar] :rate/mbps :percent :etas", {
+                    complete: "=",
+                    incomplete: " ",
+                    width: 20,
+                    total: parseInt(videoInfo.bytes)
+                });
                 
-                if(this.shouldGenerateLogs)
+                req.on("data", (data) => {
+                    bufferBytes.push(data);
+                    bar.tick(data.length);
+                });
+                req.on("end", () => {
+                    const buffer = Buffer.concat(bufferBytes);
+                    const fullDir = path.join(dir, `${sanitize(videoInfo.title)}.${format}`);
+                    fs.writeFileSync(fullDir, buffer, "binary");
+                    console.log(`Finished downloading ${formatBytes(videoInfo.bytes)}.\n`);
+                    
+                    if(this.shouldGenerateLogs)
                     SettingsManager.generateLog(videoInfo);
-                
-                resolve();
-            });
+                    
+                    resolve();
+                });
+            }
+            catch (e) {
+                console.log(chalk.bgRed(`Error downloading ${videoInfo.title}`));
+                reject();
+            }
         });
     }
 

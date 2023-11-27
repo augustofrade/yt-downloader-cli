@@ -1,13 +1,14 @@
 #!/usr/bin/env node
+import fs from 'fs';
+import yargs, { ArgumentsCamelCase } from 'yargs';
+import { hideBin } from 'yargs/helpers';
+
+import SettingsManager from './SettingsManager';
+import { DownloadFlags, SettingsCLI } from './types/interface';
+import YTDownloader from './YTDownloader';
+
 
 /* eslint-disable no-unused-vars */
-import SettingsManager from "./SettingsManager";
-import YTDownloader from "./YTDownloader";
-import yargs, { ArgumentsCamelCase, Argv } from "yargs";
-import { hideBin } from "yargs/helpers";
-import fs from "fs";
-import { DownloadFlags, DownloadOptions, SettingsCLI } from "./types/interface";
-
 const argv = yargs(hideBin(process.argv))
   .scriptName("yt-downloader")
   .usage("$0 <cmd> [url]")

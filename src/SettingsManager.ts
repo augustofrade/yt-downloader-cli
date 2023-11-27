@@ -1,8 +1,10 @@
-import path from "path";
-import fs from "fs";
-import chalk from "chalk";
-import { formatBytes } from "./functions/format-bytes";
-import { Settings, SettingsCLI, VideoInfo } from "./types/interface";
+import chalk from 'chalk';
+import fs from 'fs';
+import path from 'path';
+
+import { formatBytes } from './functions/format-bytes';
+import { SettingsEnum } from './types/enum';
+import { Settings, SettingsCLI, VideoInfo } from './types/interface';
 
 export default class SettingsManager {
     private static readonly configFilePath = path.join(__dirname, "./configs.json");
@@ -23,11 +25,12 @@ export default class SettingsManager {
 
     public static setSettings(props: SettingsCLI): boolean {
         const settings = this.Settings;
-        let saved = false;
-        // TODO: create usage of a variable number of settings
-        settings.defaultFileFormat = props.format;
-        settings.generateLogs = props.logs;
-        settings.saveDirectory = props.dir;
+        for(const [key, newValue] of Object.entries(props)) {
+            if(newValue != undefined) {
+                const settingsKey = SettingsEnum[key as keyof typeof SettingsEnum];
+                (settings as unknown as Record<string, string>)[settingsKey] = newValue;
+            }
+        }
         try {
             fs.writeFileSync(this.configFilePath, JSON.stringify(settings));
             return true;
@@ -53,7 +56,7 @@ export default class SettingsManager {
         }
         const settings: Settings = JSON.parse(fs.readFileSync(this.configFilePath, { encoding: "utf-8" }));
         if(!fs.existsSync(settings.saveDirectory)) {
-            this;this.showWarning("Warning: download directory not found. Create the neccessary paths...\n");
+            this.showWarning("Warning: download directory not found. Creating the neccessary paths...\n");
             fs.mkdirSync(settings.saveDirectory, { recursive: true });
         }
         return settings;

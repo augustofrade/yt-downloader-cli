@@ -7,10 +7,10 @@ import { Settings, SettingsCLI, VideoInfo } from "./types/interface";
 export default class SettingsManager {
     private static readonly configFilePath = path.join(__dirname, "./configs.json");
     private static readonly logFilePath = path.join(__dirname, "./logs.txt");
+    private static settings: Settings = SettingsManager.verifySettingsFile();
 
     public static get Settings(): Settings {
-        this.verifySettingsFile();
-        return JSON.parse(fs.readFileSync(this.configFilePath, { encoding: "utf-8" }));
+        return this.settings;
     }
 
     public static get downloadDirectory() {
@@ -42,16 +42,21 @@ export default class SettingsManager {
         fs.appendFileSync(this.logFilePath, msg);
     }
 
-    private static verifySettingsFile(): void {
-        // TODO: create fool-proof directory verification
+    private static verifySettingsFile(): Settings {
         if(!fs.existsSync(this.configFilePath) || fs.readFileSync(this.configFilePath).length === 0) {
             this.showWarning("Warning: no directory settings found. Creating new configuration file...\n");
             fs.writeFileSync(this.configFilePath, JSON.stringify({
-                saveDirectory: path.join(__dirname, "./downloads"),
+                saveDirectory: path.join(__dirname, "../downloads"),
                 generateLogs: true,
                 defaultFileFormat: "mp3"
             }));
         }
+        const settings: Settings = JSON.parse(fs.readFileSync(this.configFilePath, { encoding: "utf-8" }));
+        if(!fs.existsSync(settings.saveDirectory)) {
+            this;this.showWarning("Warning: download directory not found. Create the neccessary paths...\n");
+            fs.mkdirSync(settings.saveDirectory, { recursive: true });
+        }
+        return settings;
     }
 
     public static showError(msg: string): void {

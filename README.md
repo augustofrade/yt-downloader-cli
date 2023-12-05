@@ -5,15 +5,33 @@ Downloads Youtube videos as .mp3 files.
 - Download videos as MP3
 - Download a queue of videos with the *queue* option
 - Progress Bar
+- Save downloaded files anywhere
+- Generate logs (or don't) to keep track of downloaded files, with file name, channel name and download sizes
 
 ## Installation
-1. Install all dependencies with `npm install`;
-2. Build the typescript version with `npm run build`.
+```
+git clone https://github.com/augustofrade/yt-downloader-cli.git
+cd yt-downloader-cli
+npm run create
+```
+
+Or you can run each step of the installation separately:
+
+```
+git clone https://github.com/augustofrade/yt-downloader-cli.git
+cd yt-downloader-cli
+npm install
+npm run build
+npm i -g
+```
 
 ## Usage
+### Command name
+The command name is `ytdl`.
+
 ### Available commands:
 - **Download**: download videos.
-`node build/index.js download [url]`
+`ytdl download [url]`
   - Download a queue of videos:
   `download -q [url] [url] ...` or `download --queue [url] [url] ...`
 
@@ -21,15 +39,15 @@ Downloads Youtube videos as .mp3 files.
   `download ... --dir=[value] ...` 
 
 - **Settings**:  settings the downloader uses if not specified when calling the command.
-`node build/index.js settings [option]=[value]`
+`ytdl settings [option]=[value]`
   - Multiple options followed by values can be passed
   - Available options:
     - "--dir" ("-d"): Sets where the files will be saved
     - "--log" ("-l"): Sets wether the downloader should generate logs after downloading audio.
-  - Show Settings: `node build/index.js settings show`
+  - Show Settings: `ytdl settings show`
 
 To view help:
-`node build/index.js --help`
+`ytdl --help`
 
 To view help for a specific command:
-`node build/index.js <cmd> --help`
+`ytdl <cmd> --help`

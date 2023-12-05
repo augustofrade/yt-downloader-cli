@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "ts-node-dev --respawn --watch src ./src/index.ts"
+    "dev": "ts-node-dev --respawn --watch src ./src/index.ts",
+    "create": "npm install && tsc && npm i -g"
+  },
+  "bin": {
+    "ytdl": "./build/index.js"
   },
   "author": "Augusto Frade",
   "license": "ISC",

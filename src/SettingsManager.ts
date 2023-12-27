@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { formatBytes } from './functions/format-bytes';
+import verifyConfigFileSchema from './functions/verify-config-file-schema';
 import { SettingsEnum } from './types/enum';
 import { Settings, SettingsCLI, VideoInfo } from './types/interface';
 
@@ -46,8 +47,8 @@ export default class SettingsManager {
     }
 
     private static verifySettingsFile(): Settings {
-        if(!fs.existsSync(this.configFilePath) || fs.readFileSync(this.configFilePath).length === 0) {
-            this.showWarning("Warning: no directory settings found. Creating new configuration file...\n");
+        if(!fs.existsSync(this.configFilePath) || !verifyConfigFileSchema(this.configFilePath)) {
+            this.showWarning("Warning: settings file not found or has an invalid schema. Creating new configuration file...\n");
             fs.writeFileSync(this.configFilePath, JSON.stringify({
                 saveDirectory: path.join(__dirname, "../downloads"),
                 generateLogs: true,

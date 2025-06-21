@@ -2,14 +2,14 @@ import chalk from "chalk";
 import fs from "fs";
 import path from "path";
 
-import { formatBytes } from "./functions/format-bytes";
-import verifyConfigFileSchema from "./functions/verify-config-file-schema";
-import { SettingsEnum } from "./types/enum";
-import { Settings, SettingsCLI, VideoInfo } from "./types/interface";
+import { formatBytes } from "../functions/format-bytes";
+import verifyConfigFileSchema from "../functions/verify-config-file-schema";
+import { SettingsEnum } from "../types/enum";
+import { Settings, SettingsCLI, VideoInfo } from "../types/interface";
 
 export default class SettingsManager {
-  private static readonly configFilePath = path.join(__dirname, "./configs.json");
-  private static readonly logFilePath = path.join(__dirname, "./logs.txt");
+  private static readonly configFilePath = path.join(__dirname, "../configs.json");
+  private static readonly logFilePath = path.join(__dirname, "../logs.txt");
   private static settings: Settings = SettingsManager.verifySettingsFile();
 
   public static get Settings(): Settings {

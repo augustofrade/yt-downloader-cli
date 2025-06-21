@@ -1,8 +1,8 @@
 import fs from "fs";
 import { ArgumentsCamelCase } from "yargs";
-import SettingsManager from "../SettingsManager";
+import SettingsManager from "../core/SettingsManager";
+import YTDownloader from "../core/YTDownloader";
 import { DownloadFlags } from "../types/interface";
-import YTDownloader from "../YTDownloader";
 
 export function handleVideoDownloadCommand(argv: ArgumentsCamelCase<DownloadFlags>) {
   let saveDir = SettingsManager.downloadDirectory;

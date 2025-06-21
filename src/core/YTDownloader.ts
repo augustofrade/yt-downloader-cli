@@ -5,15 +5,15 @@ import path from "path";
 import ProgressBar from "progress";
 import sanitize from "sanitize-filename";
 
-import { formatBytes } from "./functions/format-bytes";
-import SettingsManager from "./SettingsManager";
+import { formatBytes } from "../functions/format-bytes";
 import {
   DownloadOptions,
   ErrorMessage,
   isErrorMessage,
   VideoInfo,
-} from "./types/interface";
-import { FilterFormat } from "./types/types";
+} from "../types/interface";
+import { FilterFormat } from "../types/types";
+import SettingsManager from "./SettingsManager";
 
 export default class YTDownloader {
   public static shouldGenerateLogs = false;

@@ -2,9 +2,9 @@
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
-import SettingsManager from "./SettingsManager";
 import { handleVideoDownloadCommand } from "./commands/download-video.command";
 import { handleSetConfigurationFileCommand } from "./commands/set-configuration-file.command";
+import SettingsManager from "./core/SettingsManager";
 
 /* eslint-disable no-unused-vars */
 const argv = yargs(hideBin(process.argv))

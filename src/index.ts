@@ -1,11 +1,10 @@
 #!/usr/bin/env node
-import fs from "fs";
-import yargs, { ArgumentsCamelCase } from "yargs";
+import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
 import SettingsManager from "./SettingsManager";
-import { DownloadFlags, SettingsCLI } from "./types/interface";
-import YTDownloader from "./YTDownloader";
+import { handleVideoDownloadCommand } from "./commands/download-video.command";
+import { handleSetConfigurationFileCommand } from "./commands/set-configuration-file.command";
 
 /* eslint-disable no-unused-vars */
 const argv = yargs(hideBin(process.argv))
@@ -36,24 +35,7 @@ const argv = yargs(hideBin(process.argv))
         });
       return argv as any;
     },
-    function (argv: ArgumentsCamelCase<DownloadFlags>) {
-      // Main function
-      let saveDir = SettingsManager.downloadDirectory;
-      if (argv.dir && fs.existsSync(argv.dir)) {
-        saveDir = argv.dir;
-      } else if (argv.dir && !fs.existsSync(argv.dir)) {
-        SettingsManager.showError(`"${argv.dir}" is not a valid directory`);
-      }
-
-      YTDownloader.shouldGenerateLogs = SettingsManager.shouldGenerateLogs;
-      if (YTDownloader.shouldGenerateLogs)
-        console.log("*Generating logs for downloaded files\n");
-
-      // Download
-      if (argv.queue) {
-        YTDownloader.downloadQueue(argv.queue, saveDir);
-      } else YTDownloader.downloadVideo(argv.url, saveDir);
-    }
+    handleVideoDownloadCommand
   )
 
   .command(
@@ -90,15 +72,7 @@ const argv = yargs(hideBin(process.argv))
           }
         );
     },
-    function (argv: ArgumentsCamelCase<SettingsCLI>) {
-      const saved = SettingsManager.setSettings({
-        dir: argv.dir,
-        logs: argv.logs,
-        format: argv.format,
-      });
-      if (saved) SettingsManager.showSuccess("Settings saved");
-      else SettingsManager.showWarning("No settings changed");
-    }
+    handleSetConfigurationFileCommand
   )
 
   .version(false)

@@ -13,7 +13,7 @@ import {
   VideoInfo,
 } from "../types/interface";
 import { FilterFormat } from "../types/types";
-import ConfigurationManager from "./ConfigurationManager";
+import ConfigurationManager from "./configuration/ConfigurationManager";
 
 export default class YTDownloader {
   public static shouldGenerateLogs = false;

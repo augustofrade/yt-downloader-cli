@@ -1,5 +1,5 @@
 import { ArgumentsCamelCase } from "yargs";
-import ConfigurationManager from "../core/ConfigurationManager";
+import ConfigurationManager from "../core/configuration/ConfigurationManager";
 import { SettingsCLI } from "../types/interface";
 
 export function handleSetConfigurationFileCommand(argv: ArgumentsCamelCase<SettingsCLI>) {

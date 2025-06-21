@@ -1,6 +1,6 @@
 import fs from "fs";
 import { ArgumentsCamelCase } from "yargs";
-import ConfigurationManager from "../core/ConfigurationManager";
+import ConfigurationManager from "../core/configuration/ConfigurationManager";
 import YTDownloader from "../core/YTDownloader";
 import { DownloadFlags } from "../types/interface";
 

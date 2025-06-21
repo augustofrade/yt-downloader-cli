@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import ProgressBar from 'progress';
 import sanitize from 'sanitize-filename';
-import ytdl, { videoInfo } from 'ytdl-core';
+import ytdl, { videoInfo } from '@distube/ytdl-core';
 
 import { formatBytes } from './functions/format-bytes';
 import SettingsManager from './SettingsManager';

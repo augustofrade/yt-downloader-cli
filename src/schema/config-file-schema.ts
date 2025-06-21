@@ -2,7 +2,7 @@ export const configFileSchema = {
   id: "/ConfigFile",
   type: "object",
   properties: {
-    saveDirectory: {
+    downloadDirectory: {
       type: "string",
     },
     defaultFileFormat: {
@@ -12,5 +12,5 @@ export const configFileSchema = {
       type: "boolean",
     },
   },
-  required: ["saveDirectory", "generateLogs", "defaultFileFormat"],
+  required: ["downloadDirectory", "generateLogs", "defaultFileFormat"],
 };

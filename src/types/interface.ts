@@ -21,7 +21,7 @@ export interface DownloadOptions {
 }
 
 export interface Settings {
-  saveDirectory: string;
+  downloadDirectory: string;
   generateLogs: boolean;
   defaultFileFormat: FileFormat;
 }

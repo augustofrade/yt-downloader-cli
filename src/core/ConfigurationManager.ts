@@ -17,7 +17,7 @@ export default class ConfigurationManager {
   }
 
   public static get downloadDirectory() {
-    return ConfigurationManager.Settings.saveDirectory;
+    return ConfigurationManager.Settings.downloadDirectory;
   }
 
   public static get shouldGenerateLogs() {
@@ -57,7 +57,7 @@ export default class ConfigurationManager {
       fs.writeFileSync(
         this.configFilePath,
         JSON.stringify({
-          saveDirectory: path.join(__dirname, "../downloads"),
+          downloadDirectory: path.join(__dirname, "../downloads"),
           generateLogs: true,
           defaultFileFormat: "mp3",
         })
@@ -66,11 +66,11 @@ export default class ConfigurationManager {
     const settings: Settings = JSON.parse(
       fs.readFileSync(this.configFilePath, { encoding: "utf-8" })
     );
-    if (!fs.existsSync(settings.saveDirectory)) {
+    if (!fs.existsSync(settings.downloadDirectory)) {
       this.showWarning(
         "Warning: download directory not found. Creating the neccessary paths...\n"
       );
-      fs.mkdirSync(settings.saveDirectory, { recursive: true });
+      fs.mkdirSync(settings.downloadDirectory, { recursive: true });
     }
     return settings;
   }

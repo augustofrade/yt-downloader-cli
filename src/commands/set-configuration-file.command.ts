@@ -1,13 +1,13 @@
 import { ArgumentsCamelCase } from "yargs";
-import SettingsManager from "../core/SettingsManager";
+import ConfigurationManager from "../core/ConfigurationManager";
 import { SettingsCLI } from "../types/interface";
 
 export function handleSetConfigurationFileCommand(argv: ArgumentsCamelCase<SettingsCLI>) {
-  const saved = SettingsManager.setSettings({
+  const saved = ConfigurationManager.setSettings({
     dir: argv.dir,
     logs: argv.logs,
     format: argv.format,
   });
-  if (saved) SettingsManager.showSuccess("Settings saved");
-  else SettingsManager.showWarning("No settings changed");
+  if (saved) ConfigurationManager.showSuccess("Settings saved");
+  else ConfigurationManager.showWarning("No settings changed");
 }

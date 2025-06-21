@@ -7,21 +7,21 @@ import verifyConfigFileSchema from "../functions/verify-config-file-schema";
 import { SettingsEnum } from "../types/enum";
 import { Settings, SettingsCLI, VideoInfo } from "../types/interface";
 
-export default class SettingsManager {
+export default class ConfigurationManager {
   private static readonly configFilePath = path.join(__dirname, "../configs.json");
   private static readonly logFilePath = path.join(__dirname, "../logs.txt");
-  private static settings: Settings = SettingsManager.verifySettingsFile();
+  private static settings: Settings = ConfigurationManager.verifySettingsFile();
 
   public static get Settings(): Settings {
     return this.settings;
   }
 
   public static get downloadDirectory() {
-    return SettingsManager.Settings.saveDirectory;
+    return ConfigurationManager.Settings.saveDirectory;
   }
 
   public static get shouldGenerateLogs() {
-    return SettingsManager.Settings.generateLogs;
+    return ConfigurationManager.Settings.generateLogs;
   }
 
   public static setSettings(props: SettingsCLI): boolean {

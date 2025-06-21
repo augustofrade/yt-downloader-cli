@@ -4,7 +4,7 @@ import { hideBin } from "yargs/helpers";
 
 import { handleVideoDownloadCommand } from "./commands/download-video.command";
 import { handleSetConfigurationFileCommand } from "./commands/set-configuration-file.command";
-import SettingsManager from "./core/SettingsManager";
+import ConfigurationManager from "./core/ConfigurationManager";
 
 /* eslint-disable no-unused-vars */
 const argv = yargs(hideBin(process.argv))
@@ -68,7 +68,7 @@ const argv = yargs(hideBin(process.argv))
             let argv = yargs.usage("$0 settings show");
           },
           function (yargs) {
-            SettingsManager.printSettings();
+            ConfigurationManager.printSettings();
           }
         );
     },

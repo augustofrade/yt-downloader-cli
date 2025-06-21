@@ -13,7 +13,7 @@ import {
   VideoInfo,
 } from "../types/interface";
 import { FilterFormat } from "../types/types";
-import SettingsManager from "./SettingsManager";
+import ConfigurationManager from "./ConfigurationManager";
 
 export default class YTDownloader {
   public static shouldGenerateLogs = false;
@@ -79,7 +79,7 @@ export default class YTDownloader {
           fs.writeFileSync(fullDir, buffer, "binary");
           console.log(`Finished downloading ${formatBytes(videoInfo.bytes)}.\n`);
 
-          if (this.shouldGenerateLogs) SettingsManager.generateLog(videoInfo);
+          if (this.shouldGenerateLogs) ConfigurationManager.generateLog(videoInfo);
 
           resolve();
         });

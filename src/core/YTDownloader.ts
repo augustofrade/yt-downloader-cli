@@ -5,13 +5,10 @@ import path from "path";
 import ProgressBar from "progress";
 import sanitize from "sanitize-filename";
 
+import ConsoleLogger from "../helpers/ConsoleLogger";
 import { formatBytes } from "../helpers/format-bytes";
-import {
-  DownloadOptions,
-  ErrorMessage,
-  isErrorMessage,
-  VideoInfo,
-} from "../types/interface";
+import { DownloadOptions, VideoInfo } from "../types/interface";
+import { Result } from "../types/result";
 import { FilterFormat } from "../types/types";
 import ConfigurationManager from "./configuration/ConfigurationManager";
 
@@ -20,33 +17,31 @@ export default class YTDownloader {
 
   public static async downloadVideo(url: string, dir: string): Promise<void> {
     // TODO: make format dynamic
-    const videoInfo = await this.getVideoInfo(url, "audioonly");
-    if (isErrorMessage(videoInfo)) {
-      console.log(chalk.bgRed(videoInfo.error));
+    const result = await this.getVideoInfo(url, "audioonly");
+    if (!result.isSuccess()) {
+      ConsoleLogger.showError(result.error);
     } else {
-      await this.execDownload(videoInfo, { dir, url, format: "mp3" });
+      await this.execDownload(result.data, { dir, url, format: "mp3" });
     }
   }
 
   private static async getVideoInfo(
     url: string,
     format: FilterFormat
-  ): Promise<VideoInfo | ErrorMessage> {
+  ): Promise<Result<VideoInfo>> {
     if (!ytdl.validateURL(url)) {
-      return {
-        error: "Invalid URL passed",
-      };
+      return Result.Failure<VideoInfo>("Invalid URL passed");
     }
 
     const info = await ytdl.getInfo(url);
     const videoFormat = ytdl.chooseFormat(info.formats, { filter: format });
     const details = info.videoDetails;
 
-    return {
+    return Result.Success<VideoInfo>({
       title: details.title,
       channelName: details.author.name,
       bytes: videoFormat.contentLength,
-    };
+    });
   }
 
   private static execDownload(

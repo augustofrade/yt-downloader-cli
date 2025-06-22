@@ -1,7 +1,7 @@
 import fs from "fs";
 import { Validator } from "jsonschema";
 
-import { configFileSchema } from "../schema/config-file-schema";
+import { configFileSchema } from "./config-file-schema";
 
 export default function verifyConfigFileSchema(filePath: string): boolean {
   const v = new Validator();

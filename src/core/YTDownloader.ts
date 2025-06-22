@@ -5,15 +5,15 @@ import path from "path";
 import ProgressBar from "progress";
 import sanitize from "sanitize-filename";
 
-import { formatBytes } from "./functions/format-bytes";
-import SettingsManager from "./SettingsManager";
+import { formatBytes } from "../helpers/format-bytes";
 import {
   DownloadOptions,
   ErrorMessage,
   isErrorMessage,
   VideoInfo,
-} from "./types/interface";
-import { FilterFormat } from "./types/types";
+} from "../types/interface";
+import { FilterFormat } from "../types/types";
+import ConfigurationManager from "./configuration/ConfigurationManager";
 
 export default class YTDownloader {
   public static shouldGenerateLogs = false;
@@ -79,7 +79,7 @@ export default class YTDownloader {
           fs.writeFileSync(fullDir, buffer, "binary");
           console.log(`Finished downloading ${formatBytes(videoInfo.bytes)}.\n`);
 
-          if (this.shouldGenerateLogs) SettingsManager.generateLog(videoInfo);
+          if (this.shouldGenerateLogs) ConfigurationManager.generateLog(videoInfo);
 
           resolve();
         });

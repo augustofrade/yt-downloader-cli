@@ -38,13 +38,13 @@ The command name is `ytdl`.
   - Change the download directory for the current queue/video:
   `download ... --dir=[value] ...` 
 
-- **Settings**:  settings the downloader uses if not specified when calling the command.
-`ytdl settings [option]=[value]`
+- **Configurations**: Configuration values the downloader uses if not specified when calling the command.
+`ytdl configs [option]=[value]`
   - Multiple options followed by values can be passed
   - Available options:
     - "--dir" ("-d"): Sets where the files will be saved
     - "--log" ("-l"): Sets wether the downloader should generate logs after downloading audio.
-  - Show Settings: `ytdl settings show`
+  - Show Configurations: `ytdl configs show`
 
 To view help:
 `ytdl --help`

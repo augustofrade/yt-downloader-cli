@@ -20,18 +20,6 @@ export interface DownloadOptions {
   format: FileFormat;
 }
 
-export interface Settings {
-  saveDirectory: string;
-  generateLogs: boolean;
-  defaultFileFormat: FileFormat;
-}
-
-export interface SettingsCLI {
-  dir: string;
-  logs: boolean;
-  format: FileFormat;
-}
-
 export interface DownloadFlags {
   dir: string;
   url: string;

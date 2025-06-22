@@ -2,7 +2,7 @@ import chalk from "chalk";
 
 export default class ConsoleLogger {
   public static showError(msg: string): void {
-    console.log(chalk.bgRed(msg));
+    console.log(chalk.red.bold(msg));
   }
 
   public static showWarning(msg: string): void {

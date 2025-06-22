@@ -16,4 +16,5 @@ export interface DownloadFlags {
   dir: string;
   url: string;
   queue: string[];
+  type: "audio" | "video";
 }

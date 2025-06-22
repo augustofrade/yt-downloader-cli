@@ -32,6 +32,12 @@ const argv = yargs(hideBin(process.argv))
             type: "array",
             description: "Downloads a list of videos separated by spaces",
           },
+          type: {
+            alias: "t",
+            type: "string",
+            description:
+              "Sets the desired type of the content to be downloaded [accepted: audio | video]",
+          },
         });
       return argv as any;
     },

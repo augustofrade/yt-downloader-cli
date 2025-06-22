@@ -13,7 +13,7 @@ Downloads Youtube videos either as music or video files
 ## Installation
 ### Requirements
 - Git
-- [Node.js](https://nodejs.org) version **18 or higher**
+- [Node.js](https://nodejs.org) version **20.18.1 or higher**
 - NPM
 
 ### Steps

@@ -7,10 +7,11 @@ import sanitize from "sanitize-filename";
 
 import ConsoleLogger from "../../helpers/ConsoleLogger";
 import { formatBytes } from "../../helpers/format-bytes";
-import { DownloadOptions, VideoInfo } from "../../types/interface";
+import { VideoInfo } from "../../types/interface";
 import { Result } from "../../types/result";
 import { FilterFormat } from "../../types/types";
 import ConfigurationManager from "../configuration/ConfigurationManager";
+import { DownloadOptions } from "./types/download-options.interface";
 
 export default class YTDownloader {
   public static shouldGenerateLogs = false;

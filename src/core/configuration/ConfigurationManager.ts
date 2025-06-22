@@ -3,10 +3,11 @@ import path from "path";
 
 import ConsoleLogger from "../../helpers/ConsoleLogger";
 import { formatBytes } from "../../helpers/format-bytes";
-import { Settings, VideoInfo } from "../../types/interface";
+import { VideoInfo } from "../../types/interface";
 import { Result } from "../../types/result";
 import { ConfigurationsOptionKeys } from "./types/configuration-option-keys.enum";
 import { ConfigurationOptions } from "./types/configuration-options.interface";
+import { ConfigurationValues } from "./types/configuration-values.interface";
 import verifyConfigFileSchema from "./verify-config-file-schema";
 
 export default class ConfigurationManager {
@@ -18,9 +19,10 @@ export default class ConfigurationManager {
     "configs.json"
   );
   private static readonly logFilePath = path.join(__dirname, this.homePath, "logs.txt");
-  private static settings: Settings = ConfigurationManager.readConfigurationFile();
+  private static settings: ConfigurationValues =
+    ConfigurationManager.readConfigurationFile();
 
-  public static get Settings(): Settings {
+  public static get Settings(): ConfigurationValues {
     return this.settings;
   }
 
@@ -57,7 +59,7 @@ export default class ConfigurationManager {
     fs.appendFileSync(this.logFilePath, msg);
   }
 
-  private static readConfigurationFile(): Settings {
+  private static readConfigurationFile(): ConfigurationValues {
     ConfigurationManager.handleHomeFolder();
 
     if (!this.verifyConfigFileIntegrity()) {
@@ -67,7 +69,7 @@ export default class ConfigurationManager {
       fs.writeFileSync(this.configFilePath, JSON.stringify(this.defaultConfiguration));
     }
 
-    const settings: Settings = JSON.parse(
+    const settings: ConfigurationValues = JSON.parse(
       fs.readFileSync(this.configFilePath, { encoding: "utf-8" })
     );
 

@@ -20,12 +20,6 @@ export interface DownloadOptions {
   format: FileFormat;
 }
 
-export interface Settings {
-  downloadDirectory: string;
-  generateLogs: boolean;
-  defaultFileFormat: FileFormat;
-}
-
 export interface DownloadFlags {
   dir: string;
   url: string;

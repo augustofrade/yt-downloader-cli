@@ -3,8 +3,9 @@ import fs from "fs";
 import path from "path";
 
 import { formatBytes } from "../../functions/format-bytes";
-import { SettingsEnum } from "../../types/enum";
 import { Settings, VideoInfo } from "../../types/interface";
+import { Result } from "../../types/result";
+import { ConfigurationsOptionKeys } from "./types/configuration-option-keys.enum";
 import { ConfigurationOptions } from "./types/configuration-options.interface";
 import verifyConfigFileSchema from "./verify-config-file-schema";
 
@@ -31,21 +32,22 @@ export default class ConfigurationManager {
     return ConfigurationManager.Settings.generateLogs;
   }
 
-  public static setOptions(options: Partial<ConfigurationOptions>): boolean {
-    const settings = this.Settings;
+  public static setOptions(options: Partial<ConfigurationOptions>): Result<boolean> {
+    const config = this.Settings;
 
-    // [[dir, ""], [format, ".mp3"]]
     for (const [key, newValue] of Object.entries(options)) {
-      if (newValue != undefined) {
-        const settingsKey = SettingsEnum[key as keyof typeof SettingsEnum];
-        (settings as unknown as Record<string, string>)[settingsKey] = newValue;
-      }
+      if (newValue == undefined) continue;
+
+      const configKey: ConfigurationsOptionKeys =
+        ConfigurationsOptionKeys[key as keyof typeof ConfigurationsOptionKeys];
+      (config as unknown as Record<string, string | boolean>)[configKey] = newValue;
     }
+
     try {
-      fs.writeFileSync(this.configFilePath, JSON.stringify(settings));
-      return true;
-    } catch {
-      return false;
+      fs.writeFileSync(this.configFilePath, JSON.stringify(config));
+      return Result.Success(true);
+    } catch (e) {
+      return Result.Failure((e as Error).message);
     }
   }
 

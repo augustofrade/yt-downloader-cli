@@ -5,11 +5,14 @@ import { ConfigurationOptions } from "../core/configuration/types/configuration-
 export function handleSetConfigurationFileCommand(
   argv: ArgumentsCamelCase<ConfigurationOptions>
 ) {
-  const saved = ConfigurationManager.setOptions({
+  const result = ConfigurationManager.setOptions({
     dir: argv.dir,
     logs: argv.logs,
     format: argv.format,
   });
-  if (saved) ConfigurationManager.showSuccess("Settings saved");
-  else ConfigurationManager.showWarning("No settings changed");
+  if (result.isSuccess()) {
+    ConfigurationManager.showSuccess("Settings saved");
+  } else {
+    ConfigurationManager.showWarning(result.error!);
+  }
 }

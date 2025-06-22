@@ -1,6 +1,7 @@
 import { ArgumentsCamelCase } from "yargs";
 import ConfigurationManager from "../core/configuration/ConfigurationManager";
 import { ConfigurationOptions } from "../core/configuration/types/configuration-options.interface";
+import ConsoleLogger from "../helpers/ConsoleLogger";
 
 export function handleSetConfigurationFileCommand(
   argv: ArgumentsCamelCase<ConfigurationOptions>
@@ -11,8 +12,8 @@ export function handleSetConfigurationFileCommand(
     format: argv.format,
   });
   if (result.isSuccess()) {
-    ConfigurationManager.showSuccess("Settings saved");
+    ConsoleLogger.showSuccess("Settings saved");
   } else {
-    ConfigurationManager.showWarning(result.error!);
+    ConsoleLogger.showWarning(result.error!);
   }
 }

@@ -5,7 +5,7 @@ import path from "path";
 import ProgressBar from "progress";
 import sanitize from "sanitize-filename";
 
-import { formatBytes } from "../functions/format-bytes";
+import { formatBytes } from "../helpers/format-bytes";
 import {
   DownloadOptions,
   ErrorMessage,

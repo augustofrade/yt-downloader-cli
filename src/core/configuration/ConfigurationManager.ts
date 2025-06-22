@@ -1,8 +1,8 @@
-import chalk from "chalk";
 import fs from "fs";
 import path from "path";
 
-import { formatBytes } from "../../functions/format-bytes";
+import ConsoleLogger from "../../helpers/ConsoleLogger";
+import { formatBytes } from "../../helpers/format-bytes";
 import { Settings, VideoInfo } from "../../types/interface";
 import { Result } from "../../types/result";
 import { ConfigurationsOptionKeys } from "./types/configuration-option-keys.enum";
@@ -61,7 +61,7 @@ export default class ConfigurationManager {
     ConfigurationManager.handleHomeFolder();
 
     if (!this.verifyConfigFileIntegrity()) {
-      this.showWarning(
+      ConsoleLogger.showWarning(
         "Settings file not found or has an invalid schema. Creating new configuration file with default schema...\n"
       );
       fs.writeFileSync(this.configFilePath, JSON.stringify(this.defaultConfiguration));
@@ -72,7 +72,9 @@ export default class ConfigurationManager {
     );
 
     if (!fs.existsSync(settings.downloadDirectory)) {
-      this.showWarning("Download directory not found. Creating the necessary paths...\n");
+      ConsoleLogger.showWarning(
+        "Download directory not found. Creating the necessary paths...\n"
+      );
       fs.mkdirSync(settings.downloadDirectory, { recursive: true });
     }
     return settings;
@@ -81,7 +83,9 @@ export default class ConfigurationManager {
   private static handleHomeFolder(): void {
     const homePath = path.join(__dirname, this.homePath);
     if (!fs.existsSync(homePath)) {
-      this.showWarning(`Creating data folder on default location: ${homePath}...\n`);
+      ConsoleLogger.showWarning(
+        `Creating data folder on default location: ${homePath}...\n`
+      );
       fs.mkdirSync(homePath, { recursive: true });
     }
   }
@@ -98,17 +102,5 @@ export default class ConfigurationManager {
       generateLogs: true,
       defaultFileFormat: "mp3",
     };
-  }
-
-  public static showError(msg: string): void {
-    console.log(chalk.bgRed(msg));
-  }
-
-  public static showWarning(msg: string): void {
-    console.log(chalk.yellow.bold(msg));
-  }
-
-  public static showSuccess(msg: string): void {
-    console.log(chalk.green(msg));
   }
 }

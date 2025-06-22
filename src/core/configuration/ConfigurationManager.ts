@@ -8,12 +8,17 @@ import { Settings, SettingsCLI, VideoInfo } from "../../types/interface";
 import verifyConfigFileSchema from "./verify-config-file-schema";
 
 export default class ConfigurationManager {
-  private static readonly configFilePath = path.join(__dirname, "../../../configs.json");
-  private static readonly logFilePath = path.join(__dirname, "../../../logs.txt");
+  private static readonly homePath = "../../../data";
+
+  private static readonly configFilePath = path.join(
+    __dirname,
+    this.homePath,
+    "configs.json"
+  );
+  private static readonly logFilePath = path.join(__dirname, this.homePath, "logs.txt");
   private static settings: Settings = ConfigurationManager.verifySettingsFile();
 
   public static get Settings(): Settings {
-    console.log(__dirname);
     return this.settings;
   }
 
@@ -48,6 +53,8 @@ export default class ConfigurationManager {
   }
 
   private static verifySettingsFile(): Settings {
+    ConfigurationManager.handleHomeFolder();
+
     if (
       !fs.existsSync(this.configFilePath) ||
       !verifyConfigFileSchema(this.configFilePath)
@@ -58,7 +65,7 @@ export default class ConfigurationManager {
       fs.writeFileSync(
         this.configFilePath,
         JSON.stringify({
-          downloadDirectory: path.join(__dirname, "../downloads"),
+          downloadDirectory: path.join(__dirname, this.homePath, "downloads"),
           generateLogs: true,
           defaultFileFormat: "mp3",
         })
@@ -76,12 +83,20 @@ export default class ConfigurationManager {
     return settings;
   }
 
+  public static handleHomeFolder() {
+    const homePath = path.join(__dirname, this.homePath);
+    if (!fs.existsSync(homePath)) {
+      this.showWarning(`Creating data folder on default location: ${homePath}...\n`);
+      fs.mkdirSync(homePath, { recursive: true });
+    }
+  }
+
   public static showError(msg: string): void {
     console.log(chalk.bgRed(msg));
   }
 
   public static showWarning(msg: string): void {
-    console.log(chalk.bgYellow.black(msg));
+    console.log(chalk.yellow.bold(msg));
   }
 
   public static showSuccess(msg: string): void {

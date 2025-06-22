@@ -98,11 +98,11 @@ export default class ConfigurationManager {
     );
   }
 
-  public static get defaultConfiguration() {
+  public static get defaultConfiguration(): ConfigurationValues {
     return {
       downloadDirectory: path.join(__dirname, this.homePath, "downloads"),
       generateLogs: true,
-      defaultFileFormat: "mp3",
+      downloadType: "audio",
     };
   }
 }

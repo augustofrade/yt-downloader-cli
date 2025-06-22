@@ -5,12 +5,12 @@ export const configFileSchema = {
     downloadDirectory: {
       type: "string",
     },
-    defaultFileFormat: {
+    downloadType: {
       type: "string",
     },
     generateLogs: {
       type: "boolean",
     },
   },
-  required: ["downloadDirectory", "generateLogs", "defaultFileFormat"],
+  required: ["downloadDirectory", "generateLogs", "downloadType"],
 };

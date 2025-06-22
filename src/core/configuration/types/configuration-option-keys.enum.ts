@@ -1,5 +1,5 @@
 export enum ConfigurationsOptionKeys {
-  format = "defaultFileFormat",
+  type = "downloadType",
   logs = "generateLogs",
   dir = "downloadDirectory",
 }

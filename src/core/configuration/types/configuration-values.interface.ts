@@ -1,7 +1,7 @@
-import { FileFormat } from "../../../types/types";
+import DownloadType from "../../downloader/types/download-type";
 
 export interface ConfigurationValues {
   downloadDirectory: string;
   generateLogs: boolean;
-  defaultFileFormat: FileFormat;
+  downloadType: DownloadType;
 }

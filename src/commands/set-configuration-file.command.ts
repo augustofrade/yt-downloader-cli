@@ -9,7 +9,7 @@ export function handleSetConfigurationFileCommand(
   const result = ConfigurationManager.setOptions({
     dir: argv.dir,
     logs: argv.logs,
-    format: argv.format,
+    type: argv.type,
   });
   if (result.isSuccess()) {
     ConsoleLogger.showSuccess("Settings saved");

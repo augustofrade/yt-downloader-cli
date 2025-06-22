@@ -1,7 +1,7 @@
 import fs from "fs";
 import { ArgumentsCamelCase } from "yargs";
 import ConfigurationManager from "../core/configuration/ConfigurationManager";
-import YTDownloader from "../core/YTDownloader";
+import YTDownloader from "../core/downloader/YTDownloader";
 import ConsoleLogger from "../helpers/ConsoleLogger";
 import { DownloadFlags } from "../types/interface";
 

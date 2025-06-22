@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "ts-node-dev --respawn --watch src ./src/index.ts",
+    "ts": "ts-node-dev ./src/index.ts",
     "create": "npm install && tsc && npm i -g"
   },
   "bin": {

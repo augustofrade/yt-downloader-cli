@@ -1,5 +1,3 @@
-import { FileFormat } from "./types";
-
 export interface ErrorMessage {
   error: string;
 }
@@ -12,12 +10,6 @@ export interface VideoInfo {
   title: string;
   channelName: string;
   bytes: string;
-}
-
-export interface DownloadOptions {
-  dir: string;
-  url: string;
-  format: FileFormat;
 }
 
 export interface DownloadFlags {

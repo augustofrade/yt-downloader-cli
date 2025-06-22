@@ -7,7 +7,7 @@ import ConsoleLogger from "../helpers/ConsoleLogger";
 export function handleSetConfigurationFileCommand(
   argv: ArgumentsCamelCase<ConfigurationOptions>
 ) {
-  if (getDownloadTypeInfo(argv.type) == undefined) {
+  if (argv.type && getDownloadTypeInfo(argv.type) == undefined) {
     ConsoleLogger.showError(
       `Invalid value for 'type' configuration. Expected (audio|video) but received "${argv.type}"`
     );

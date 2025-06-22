@@ -1,5 +1,5 @@
 
-# Youtube MP3 Downloader CLI
+# Youtube Downloader CLI
 Downloads Youtube videos either as music or video files
 
 ## Features
@@ -12,6 +12,7 @@ Downloads Youtube videos either as music or video files
 
 ## Installation
 ### Requirements
+- Git
 - [Node.js](https://nodejs.org) version **18 or higher**
 - NPM
 

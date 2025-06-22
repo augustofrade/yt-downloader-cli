@@ -3,7 +3,7 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
 import { handleVideoDownloadCommand } from "./commands/download-video.command";
-import { printConfigurations } from "./commands/print-configurations";
+import { printConfigurations } from "./commands/print-configurations.command";
 import { handleSetConfigurationFileCommand } from "./commands/set-configuration-file.command";
 
 /* eslint-disable no-unused-vars */

@@ -9,7 +9,7 @@ import ConfigurationManager from "./core/configuration/ConfigurationManager";
 /* eslint-disable no-unused-vars */
 const argv = yargs(hideBin(process.argv))
   .scriptName("yt-downloader")
-  .usage("$0 <cmd> [url]")
+  .usage("$0 <cmd>")
 
   .command(
     "download [url]",
@@ -39,11 +39,11 @@ const argv = yargs(hideBin(process.argv))
   )
 
   .command(
-    "settings",
-    "Define settings values passed from the options",
+    "configs",
+    "Define configuration values passed from the options",
     (yargs) => {
       let argv = yargs
-        .usage("$0 settings [option]=[value]")
+        .usage("$0 configs [option]=[value]")
         .options({
           dir: {
             alias: "d",
@@ -63,9 +63,9 @@ const argv = yargs(hideBin(process.argv))
 
         .command(
           "show",
-          "Exibes all settings and its values",
+          "Shows all configuration and its values",
           (yargs) => {
-            let argv = yargs.usage("$0 settings show");
+            let argv = yargs.usage("$0 configs show");
           },
           function (yargs) {
             ConfigurationManager.printSettings();

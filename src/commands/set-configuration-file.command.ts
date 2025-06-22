@@ -14,6 +14,6 @@ export function handleSetConfigurationFileCommand(
   if (result.isSuccess()) {
     ConsoleLogger.showSuccess("Settings saved");
   } else {
-    ConsoleLogger.showWarning(result.error!);
+    ConsoleLogger.showWarning(result.error);
   }
 }

@@ -106,8 +106,4 @@ export default class ConfigurationManager {
   public static showSuccess(msg: string): void {
     console.log(chalk.green(msg));
   }
-
-  public static printSettings() {
-    console.table(this.Settings);
-  }
 }

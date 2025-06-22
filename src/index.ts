@@ -3,8 +3,8 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
 import { handleVideoDownloadCommand } from "./commands/download-video.command";
+import { printConfigurations } from "./commands/print-configurations";
 import { handleSetConfigurationFileCommand } from "./commands/set-configuration-file.command";
-import ConfigurationManager from "./core/configuration/ConfigurationManager";
 
 /* eslint-disable no-unused-vars */
 const argv = yargs(hideBin(process.argv))
@@ -67,9 +67,7 @@ const argv = yargs(hideBin(process.argv))
           (yargs) => {
             let argv = yargs.usage("$0 configs show");
           },
-          function (yargs) {
-            ConfigurationManager.printSettings();
-          }
+          printConfigurations
         );
     },
     handleSetConfigurationFileCommand

@@ -4,7 +4,8 @@ import path from "path";
 
 import { formatBytes } from "../../functions/format-bytes";
 import { SettingsEnum } from "../../types/enum";
-import { Settings, SettingsCLI, VideoInfo } from "../../types/interface";
+import { Settings, VideoInfo } from "../../types/interface";
+import { ConfigurationOptions } from "./types/configuration-options.interface";
 import verifyConfigFileSchema from "./verify-config-file-schema";
 
 export default class ConfigurationManager {
@@ -30,9 +31,11 @@ export default class ConfigurationManager {
     return ConfigurationManager.Settings.generateLogs;
   }
 
-  public static setSettings(props: SettingsCLI): boolean {
+  public static setOptions(options: Partial<ConfigurationOptions>): boolean {
     const settings = this.Settings;
-    for (const [key, newValue] of Object.entries(props)) {
+
+    // [[dir, ""], [format, ".mp3"]]
+    for (const [key, newValue] of Object.entries(options)) {
       if (newValue != undefined) {
         const settingsKey = SettingsEnum[key as keyof typeof SettingsEnum];
         (settings as unknown as Record<string, string>)[settingsKey] = newValue;

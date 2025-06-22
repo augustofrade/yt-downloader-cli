@@ -1,9 +1,11 @@
 import { ArgumentsCamelCase } from "yargs";
 import ConfigurationManager from "../core/configuration/ConfigurationManager";
-import { SettingsCLI } from "../types/interface";
+import { ConfigurationOptions } from "../core/configuration/types/configuration-options.interface";
 
-export function handleSetConfigurationFileCommand(argv: ArgumentsCamelCase<SettingsCLI>) {
-  const saved = ConfigurationManager.setSettings({
+export function handleSetConfigurationFileCommand(
+  argv: ArgumentsCamelCase<ConfigurationOptions>
+) {
+  const saved = ConfigurationManager.setOptions({
     dir: argv.dir,
     logs: argv.logs,
     format: argv.format,

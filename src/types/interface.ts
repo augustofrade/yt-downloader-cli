@@ -26,12 +26,6 @@ export interface Settings {
   defaultFileFormat: FileFormat;
 }
 
-export interface SettingsCLI {
-  dir: string;
-  logs: boolean;
-  format: FileFormat;
-}
-
 export interface DownloadFlags {
   dir: string;
   url: string;

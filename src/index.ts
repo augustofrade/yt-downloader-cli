@@ -36,7 +36,7 @@ const argv = yargs(hideBin(process.argv))
             alias: "t",
             type: "string",
             description:
-              "Sets the desired type of the content to be downloaded [accepted: audio | video]",
+              "Sets the desired type of the content to be downloaded [audio | video]",
           },
         });
       return argv as any;
@@ -64,6 +64,13 @@ const argv = yargs(hideBin(process.argv))
             type: "boolean",
             description:
               "Sets whether to log the downloaded files to the log file or not",
+          },
+        })
+        .options({
+          type: {
+            alias: "t",
+            type: "string",
+            description: "Sets the default download type [audio|video]",
           },
         })
 

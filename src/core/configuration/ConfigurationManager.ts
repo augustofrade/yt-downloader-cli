@@ -16,7 +16,7 @@ export default class ConfigurationManager {
     "configs.json"
   );
   private static readonly logFilePath = path.join(__dirname, this.homePath, "logs.txt");
-  private static settings: Settings = ConfigurationManager.verifySettingsFile();
+  private static settings: Settings = ConfigurationManager.readConfigurationFile();
 
   public static get Settings(): Settings {
     return this.settings;
@@ -52,43 +52,47 @@ export default class ConfigurationManager {
     fs.appendFileSync(this.logFilePath, msg);
   }
 
-  private static verifySettingsFile(): Settings {
+  private static readConfigurationFile(): Settings {
     ConfigurationManager.handleHomeFolder();
 
-    if (
-      !fs.existsSync(this.configFilePath) ||
-      !verifyConfigFileSchema(this.configFilePath)
-    ) {
+    if (!this.verifyConfigFileIntegrity()) {
       this.showWarning(
-        "Warning: settings file not found or has an invalid schema. Creating new configuration file...\n"
+        "Settings file not found or has an invalid schema. Creating new configuration file with default schema...\n"
       );
-      fs.writeFileSync(
-        this.configFilePath,
-        JSON.stringify({
-          downloadDirectory: path.join(__dirname, this.homePath, "downloads"),
-          generateLogs: true,
-          defaultFileFormat: "mp3",
-        })
-      );
+      fs.writeFileSync(this.configFilePath, JSON.stringify(this.defaultConfiguration));
     }
+
     const settings: Settings = JSON.parse(
       fs.readFileSync(this.configFilePath, { encoding: "utf-8" })
     );
+
     if (!fs.existsSync(settings.downloadDirectory)) {
-      this.showWarning(
-        "Warning: download directory not found. Creating the neccessary paths...\n"
-      );
+      this.showWarning("Download directory not found. Creating the necessary paths...\n");
       fs.mkdirSync(settings.downloadDirectory, { recursive: true });
     }
     return settings;
   }
 
-  public static handleHomeFolder() {
+  private static handleHomeFolder(): void {
     const homePath = path.join(__dirname, this.homePath);
     if (!fs.existsSync(homePath)) {
       this.showWarning(`Creating data folder on default location: ${homePath}...\n`);
       fs.mkdirSync(homePath, { recursive: true });
     }
+  }
+
+  private static verifyConfigFileIntegrity(): boolean {
+    return (
+      fs.existsSync(this.configFilePath) && verifyConfigFileSchema(this.configFilePath)
+    );
+  }
+
+  public static get defaultConfiguration() {
+    return {
+      downloadDirectory: path.join(__dirname, this.homePath, "downloads"),
+      generateLogs: true,
+      defaultFileFormat: "mp3",
+    };
   }
 
   public static showError(msg: string): void {

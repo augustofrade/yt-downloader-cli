@@ -2,33 +2,40 @@ import ytdl from "@distube/ytdl-core";
 import chalk from "chalk";
 import fs from "fs";
 import path from "path";
-import ProgressBar from "progress";
 import sanitize from "sanitize-filename";
 
+import ProgressBar from "progress";
 import ConsoleLogger from "../../helpers/ConsoleLogger";
 import { formatBytes } from "../../helpers/format-bytes";
 import { VideoInfo } from "../../types/interface";
 import { Result } from "../../types/result";
-import { FilterFormat } from "../../types/types";
 import ConfigurationManager from "../configuration/ConfigurationManager";
+import getDownloadTypeInfo from "./helpers/get-download-type-info";
 import { DownloadOptions } from "./types/download-options.interface";
+import DownloadType, { FormatInfo } from "./types/download-type";
 
 export default class YTDownloader {
   public static shouldGenerateLogs = false;
 
-  public static async downloadVideo(url: string, dir: string): Promise<void> {
-    // TODO: make format dynamic
-    const result = await this.getVideoInfo(url, "audioonly");
+  public static async downloadVideo(
+    url: string,
+    dir: string,
+    downloadType: DownloadType
+  ): Promise<void> {
+    const downloadTypeInfo = getDownloadTypeInfo(downloadType);
+    const result = await this.getVideoInfo(url, downloadTypeInfo.formatInfo);
+
     if (!result.isSuccess()) {
       ConsoleLogger.showError(result.error);
-    } else {
-      await this.execDownload(result.data, { dir, url, format: "mp3" });
+      return;
     }
+
+    await this.execDownload(result.data, { dir, url, downloadTypeInfo });
   }
 
   private static async getVideoInfo(
     url: string,
-    format: FilterFormat
+    format: FormatInfo
   ): Promise<Result<VideoInfo>> {
     if (!ytdl.validateURL(url)) {
       return Result.Failure<VideoInfo>("Invalid URL passed");
@@ -49,29 +56,38 @@ export default class YTDownloader {
     videoInfo: VideoInfo,
     downloadOptions: DownloadOptions
   ): Promise<void> {
-    const { dir, url, format } = downloadOptions;
+    const { dir, url, downloadTypeInfo } = downloadOptions;
     return new Promise((resolve, reject) => {
       console.log(
         `Downloading ${chalk.green(videoInfo.title)} by ${chalk.green(videoInfo.channelName)}`
       );
       try {
         const bufferBytes: Uint8Array[] = [];
-        // TODO: make format dynamic
-        const req = ytdl(url, { filter: "audioonly" });
-        var bar = new ProgressBar("  Progress: [:bar] :rate/mbps :percent :etas", {
-          complete: "=",
-          incomplete: " ",
-          width: 20,
-          total: parseInt(videoInfo.bytes),
+
+        const req = ytdl(url, {
+          filter: downloadTypeInfo.formatInfo,
         });
+        // TODO: get content length from videos with the "info" event and pass it to the bar.
+        var bar =
+          downloadTypeInfo.fileExtension === "mp3"
+            ? new ProgressBar("  Progress: [:bar] :rate/mbps :percent :etas", {
+                complete: "=",
+                incomplete: " ",
+                width: 20,
+                total: parseInt(videoInfo.bytes),
+              })
+            : null;
 
         req.on("data", (data: Uint8Array) => {
           bufferBytes.push(data);
-          bar.tick(data.length);
+          bar?.tick(data.length);
         });
         req.on("end", () => {
           const buffer: Buffer = Buffer.concat(bufferBytes);
-          const fullDir = path.join(dir, `${sanitize(videoInfo.title)}.${format}`);
+          const fullDir = path.join(
+            dir,
+            `${sanitize(videoInfo.title)}.${downloadTypeInfo.fileExtension}`
+          );
           fs.writeFileSync(fullDir, buffer, "binary");
           console.log(`Finished downloading ${formatBytes(videoInfo.bytes)}.\n`);
 
@@ -86,9 +102,9 @@ export default class YTDownloader {
     });
   }
 
-  static async downloadQueue(urls: string[], dir: string) {
+  static async downloadQueue(urls: string[], dir: string, type: DownloadType) {
     for (let i = 0; i < urls.length; i++) {
-      await this.downloadVideo(urls[i], dir);
+      await this.downloadVideo(urls[i], dir, type);
     }
   }
 }

@@ -10,6 +10,7 @@ Downloads Youtube videos either as music or video files
 - Save downloaded files anywhere
 - Generate logs (or don't) to keep track of downloaded files, with file and channel names and download size
 
+
 ## Installation
 ### Requirements
 - Git
@@ -39,33 +40,6 @@ Check if the CLI program was successfully installed:
 ytdl help
 ```
 
-## Run in Development Mode
-
-You can run the CLI directly in development mode without compiling the TypeScript files manually.
-
-### Option 1: Run with Typescript (no build required)
-```bash
-npm run ts -- <command> [options]
-```
-
-Example:
-```bash
-npm run ts -- config --dir /home/user/Downloads
-```
-
-### Options 2: Run transpiled JavaScript
-If you prefer to compile Typescript to JavaScript manually:
-```
-npx tsc
-node build/index.js <command> ...
-```
-
-Example:
-```bash
-npx tsc
-node build/index -- config --dir /home/user/Downloads
-```
-
 
 ## Usage
 
@@ -86,6 +60,7 @@ Downloading <Video Name> by <Channel Name>
   Progress: [====================] XXXX/mbps 100% 1.4s
 Finished downloading 9.23 MB.
 ```
+
 
 ### Available Commands
 1. **Download**
@@ -121,6 +96,7 @@ Finished downloading 9.23 MB.
 	- **Show help for a specific command:**
 		- `ytdl <command> --help`
 
+
 ## Storage
 
 Data is stored under the *data/* directory in the root of the project. The default contents of this folder are:
@@ -129,3 +105,31 @@ Data is stored under the *data/* directory in the root of the project. The defau
 - **downloads/**: directory containing all the downloaded content.
 
 
+## Run in Development Mode
+
+You can also run the CLI directly in development mode without compiling the TypeScript files and installing the CLI.
+
+For both options, you **must move be in the root directory of the project**.
+
+### Option 1: Run with Typescript (no build required)
+```bash
+npm run ts -- <command> [options]
+```
+
+Example:
+```bash
+npm run ts -- config --dir /home/user/Downloads
+```
+
+### Options 2: Run transpiled JavaScript
+If you prefer to compile Typescript to JavaScript manually:
+```
+npx tsc
+node build/index.js <command> ...
+```
+
+Example:
+```bash
+npx tsc
+node build/index -- config --dir /home/user/Downloads
+```

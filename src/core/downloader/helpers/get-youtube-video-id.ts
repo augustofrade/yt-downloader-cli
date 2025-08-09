@@ -12,14 +12,13 @@ export function getYoutubeVideoId(url: string): Result<string> {
   const pathname = urlObj.pathname.substring(1);
 
   if (
-    (urlObj.hostname === "youtube.com" || urlObj.hostname === "music.youtube.com") &&
+    (urlObj.hostname === "www.youtube.com" || urlObj.hostname === "music.youtube.com") &&
     pathname === "watch"
   ) {
     videoId = urlObj.searchParams.get("v");
   } else if (urlObj.hostname === "youtu.be") {
     videoId = pathname !== "" ? pathname : null;
   }
-
   if (videoId) {
     return Result.Success<string>(videoId);
   }
